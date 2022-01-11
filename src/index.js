@@ -1,5 +1,30 @@
-const express = require('express')
-const app = express()
-const port = 3333
+const express = require("express");
+const { v4: uuidv4 } = require("uuid");
 
-app.listen(port, () => console.log(`Server running 🚀 🚀!`))
+const app = express();
+const port = 3333;
+
+app.use(express.json());
+
+const customers = [];
+/***
+ * cpf - string
+ * name - string
+ * uuid - uuid
+ * statement []
+ */
+app.post("/account", (request, response) => {
+  const { cpf, name } = request.body;
+  const id = uuidv4();
+
+  customers.push({ 
+      cpf,
+      name,
+      id,
+      statement: []
+  });
+
+  return response.status(201).send();
+});
+
+app.listen(port, () => console.log(`Server running 🚀 🚀!`));
