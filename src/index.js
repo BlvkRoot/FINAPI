@@ -26,9 +26,7 @@ function getBalance(statement) {
     if (operation.type === "credit") {
       return acc + operation.amount;
     }
-    {
-      return acc - operation.amount;
-    }
+    return acc - operation.amount;
   }, 0);
 
   return balance;
@@ -109,6 +107,20 @@ app.get("/statement/date", verifyIfCPFAccountExists, (request, response) => {
   );
 
   return response.json(statement);
+});
+
+app.put('/account', verifyIfCPFAccountExists, (request, response) => {
+    const { name } = request.body;
+    const { customer } = request;
+
+    customer.name = name;
+    return response.status(201).send();
+});
+
+app.get('/account', verifyIfCPFAccountExists, (request, response) => {
+    const { customer } = request;
+
+    return response.json(customer);
 });
 
 app.listen(port, () => console.log(`Server running 🚀 🚀!`));
